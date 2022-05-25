@@ -36,7 +36,7 @@ public class CustomerDAOTest {
 
 	@Test
 	public void testReadLatest() {
-		assertEquals(new Customer(1L, "jordan", "harrison","username","pass"), DAO.readLatest());
+		assertEquals(new Customer(1L, "jordan", "harrison","username","pass"), DAO.read());
 	}
 
 	@Test

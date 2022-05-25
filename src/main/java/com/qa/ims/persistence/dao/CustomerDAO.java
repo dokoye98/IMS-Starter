@@ -15,7 +15,7 @@ import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDAO implements Dao<Customer> {
+public class CustomerDAO implements Dao<Customer>,Customerinter {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -51,7 +51,7 @@ public class CustomerDAO implements Dao<Customer> {
 		return new ArrayList<>();
 	}
 @Override
-	public Customer readLatest() {
+	public Customer read() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
@@ -70,14 +70,14 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @param customer - takes in a customer object. id will be ignored
 	 */
 	@Override
-	public Customer createCustomer(Customer customer) {
+	public Customer create(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("INSERT INTO customers(first_name, surname) VALUES (?, ?)");) {
 			statement.setString(1, customer.getFirstName());
 			statement.setString(2, customer.getSurname());
 			statement.executeUpdate();
-			return readLatest();
+			return read();
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -85,7 +85,7 @@ public class CustomerDAO implements Dao<Customer> {
 		return null;
 	}
 @Override
-	public Customer readallCustomer(Long id) {
+	public Customer read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE id = ?");) {
 			statement.setLong(1, id);
@@ -108,7 +108,7 @@ public class CustomerDAO implements Dao<Customer> {
 	 * @return
 	 */
 @Override
-	public Customer updateCustomer(Customer customer) {
+	public Customer update(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
@@ -116,7 +116,7 @@ public class CustomerDAO implements Dao<Customer> {
 			statement.setString(2, customer.getSurname());
 			statement.setLong(3, customer.getId());
 			statement.executeUpdate();
-			return readallCustomer(customer.getId());
+			return read(customer.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -143,6 +143,8 @@ public class CustomerDAO implements Dao<Customer> {
 	}
 
 	
+	}
+
 
 	
-}
+
