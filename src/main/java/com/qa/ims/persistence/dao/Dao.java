@@ -11,17 +11,9 @@ public interface Dao<T> {
 
 	
 	
-	T read(Long id);
 
-	T create(T t);
 
-	T update(T t);
-
-	int delete(long id);
-
-	T modelFromResultSet(ResultSet resultSet) throws SQLException;
-
-	Customer modelCustomer(ResultSet resultSet) throws SQLException;
+	
 
 	Item readLatestitem(long id);
 
@@ -32,4 +24,46 @@ public interface Dao<T> {
 	List<Item> readallitem();
 
 	Item modelitems(ResultSet resultSet) throws SQLException;
+	
+	//specifying the class has stopped the errors 
+	Customer readLatest();
+Customer modelCustomer(ResultSet resultSet) throws SQLException;
+	/**
+	 * Reads all customers from the database
+	 * 
+	 * @return A list of customers
+	 */
+	List<Customer> readAll();
+
+	Customer readallCustomer(Long id);
+
+	/**
+	 * Creates a customer in the database
+	 * 
+	 * @param customer - takes in a customer object. id will be ignored
+	 */
+	Customer create(Customer customer);
+
+	/**
+	 * Deletes a customer in the database
+	 * 
+	 * @param id - id of the customer
+	 */
+	int delete(long id);
+
+	/**
+	 * Creates a customer in the database
+	 * 
+	 * @param customer - takes in a customer object. id will be ignored
+	 */
+	Customer createCustomer(Customer customer);
+
+	/**
+	 * Updates a customer in the database
+	 * 
+	 * @param customer - takes in a customer object, the id field will be used to
+	 *                 update that customer in the database
+	 * @return
+	 */
+	Customer updateCustomer(Customer customer);
 }

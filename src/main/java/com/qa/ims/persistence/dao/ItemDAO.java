@@ -21,13 +21,14 @@ public class ItemDAO implements Dao<Item> {
 
 	
 	//model
+	@Override
 	public Item modelitems(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		double cost = resultSet.getDouble("cost");
 		String name = resultSet.getString("name");
 		return new Item(id,cost,name);
 	}
-	
+	@Override
 	public List<Item> readallitem() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -60,7 +61,7 @@ public class ItemDAO implements Dao<Item> {
 		return null;
 	
 }
-	
+	@Override 
 	public int deleteItem(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
@@ -73,7 +74,7 @@ public class ItemDAO implements Dao<Item> {
 		return 0;
 		}
 
-
+@Override
 	public Item updateitem(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
@@ -99,41 +100,7 @@ public class ItemDAO implements Dao<Item> {
 
 	
 
-	@Override
-	public Item read(Long id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
-	@Override
-	public Item create(Item t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Item update(Item t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int delete(long id) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Customer modelCustomer(ResultSet resultSet) throws SQLException {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 
 }
