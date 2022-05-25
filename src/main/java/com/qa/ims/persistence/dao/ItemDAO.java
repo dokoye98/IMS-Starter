@@ -22,7 +22,7 @@ public class ItemDAO implements Dao<Item>,ItemsInterface {
 	
 	//model
 	@Override
-	public Item modelitems(ResultSet resultSet) throws SQLException {
+	public Item modelItems(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		double cost = resultSet.getDouble("cost");
 		String name = resultSet.getString("name");
@@ -37,7 +37,7 @@ public class ItemDAO implements Dao<Item>,ItemsInterface {
 			//items data type into array list
 			List<Item> item = new ArrayList<>();
 			while (resultSet.next()) {
-				item.add(modelitems(resultSet));
+				item.add(modelItems(resultSet));
 			}
 			//return of the array list
 			return item;
@@ -53,7 +53,7 @@ public Item read(Long id) {
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
-			return modelitems(resultSet);
+			return modelItems(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -78,13 +78,13 @@ public Item read(Long id) {
 public Item update(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
-						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
+						.prepareStatement("UPDATE item SET cost = ?, name = ? WHERE id = ?");) {
 			System.out.println("item has been connected");
-			preStmt.setFloat(1, item.getId());
-			preStmt.setDouble(2, item.getCost());
-			preStmt.setString(3, item.getName());
+			preStmt.setDouble(1, item.getCost());
+			preStmt.setString(2, item.getName());
+			preStmt.setLong(3, item.getId());
 			preStmt.executeUpdate();
-			return readLatestitem(item.getId());
+			return read(item.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -98,22 +98,40 @@ public Item update(Item item) {
 	
 	}
 
-}
+
 @Override
-public Item create(Item t) {
-	// TODO Auto-generated method stub
+public Item create(Item item) {
+	try (Connection connection = DBUtils.getInstance().getConnection();
+			PreparedStatement Stmt = connection
+					.prepareStatement("INSERT INTO item(cost,name) VALUES (?, ?)");) {
+		Stmt.setDouble(1, item.getCost());
+		Stmt.setString(2, item.getName());
+		
+		Stmt.executeUpdate();
+		return read();
+	} catch (Exception e) {
+		LOGGER.debug(e);
+		LOGGER.error(e.getMessage());
+	}
 	return null;
-}
-
 
 }
 
 
-@Override
 public Item read() {
-	// TODO Auto-generated method stub
+	try (Connection connection = DBUtils.getInstance().getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+		resultSet.next();
+		return modelItems(resultSet);
+	} catch (Exception e) {
+		LOGGER.debug(e);
+		LOGGER.error(e.getMessage());
+	}
 	return null;
+
 }
+
 
 	
 
