@@ -62,7 +62,7 @@ public Item read(Long id) {
 	
 }
 	@Override 
-	public int deleteItem(long id) {
+	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
 			statement.setLong(1, id);
@@ -75,7 +75,7 @@ public Item read(Long id) {
 		}
 
 @Override
-	public Item updateitem(Item item) {
+public Item update(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
 						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
@@ -104,15 +104,8 @@ public Item create(Item t) {
 	// TODO Auto-generated method stub
 	return null;
 }
-@Override
-public Item update(Item t) {
-	// TODO Auto-generated method stub
-	return null;
-}
-@Override
-public int delete(long id) {
-	// TODO Auto-generated method stub
-	return 0;
+
+
 }
 
 

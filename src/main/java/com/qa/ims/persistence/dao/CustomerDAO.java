@@ -72,11 +72,13 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	@Override
 	public Customer create(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("INSERT INTO customers(first_name, surname) VALUES (?, ?)");) {
-			statement.setString(1, customer.getFirstName());
-			statement.setString(2, customer.getSurname());
-			statement.executeUpdate();
+				PreparedStatement Stmt = connection
+						.prepareStatement("INSERT INTO customers(first_name, surname,username,password) VALUES (?, ?,?,?)");) {
+			Stmt.setString(1, customer.getFirstName());
+			Stmt.setString(2, customer.getSurname());
+			Stmt.setString(3, customer.getUsername());
+			Stmt.setString(4, customer.getPassword());
+			Stmt.executeUpdate();
 			return read();
 		} catch (Exception e) {
 			LOGGER.debug(e);
