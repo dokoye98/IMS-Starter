@@ -1,19 +1,19 @@
 package com.qa.ims.persistence.dao;
 
-import static org.junit.Assert.assertEquals;
+
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDAOTest {
+public class ItemDAOTest {
 
-	private final CustomerDAO DAO = new CustomerDAO();
+	private final ItemDAOTest idao = new ItemDAOTest();
 
 	@Before
 	public void setup() {
@@ -24,14 +24,14 @@ public class CustomerDAOTest {
 	@Test
 	public void testCreate() {
 		final Customer created = new Customer(2L, "chris", "perrins","username","pass");
-		assertEquals(created, DAO.create(created));
+		assertEquals(created, idao.create(created));
 	}
 
 	@Test
 	public void testReadAll() {
 		List<Customer> expected = new ArrayList<>();
-		expected.add(new Customer(1L, "jordan", "harrison","username","pass"));
-		assertEquals(expected, DAO.readAll());
+		expected.add(new Item(1L, "jordan", "harrison","username","pass"));
+		assertEquals(expected, idao.readAll());
 	}
 
 	@Test
@@ -56,4 +56,5 @@ public class CustomerDAOTest {
 	public void testDelete() {
 		assertEquals(1, DAO.delete(1));
 	}
+	
 }
