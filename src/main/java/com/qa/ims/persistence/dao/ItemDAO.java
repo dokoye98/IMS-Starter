@@ -39,7 +39,7 @@ public class ItemDAO implements Dao<Item>,ItemsInterface {
 			while (resultSet.next()) {
 				item.add(modelItems(resultSet));
 			}
-			//return of the array list
+			
 			return item;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
