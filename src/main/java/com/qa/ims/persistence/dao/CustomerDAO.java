@@ -109,7 +109,7 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	 *                 update that customer in the database
 	 * @return
 	 */
-//edited query
+//edited query 
 @Override
 	public Customer update(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
