@@ -15,20 +15,21 @@ import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class ItemDAO {
+public class ItemDAO implements Dao<Item>,ItemsInterface {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	
 	//model
-	public Item modelitems(ResultSet resultSet) throws SQLException {
+	@Override
+	public Item modelItems(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		double cost = resultSet.getDouble("cost");
 		String name = resultSet.getString("name");
 		return new Item(id,cost,name);
 	}
-	
-	public List<Item> readallitem() {
+	@Override
+	public List<Item> readAll(){
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM item");) {
@@ -36,9 +37,9 @@ public class ItemDAO {
 			//items data type into array list
 			List<Item> item = new ArrayList<>();
 			while (resultSet.next()) {
-				item.add(modelitems(resultSet));
+				item.add(modelItems(resultSet));
 			}
-			//return of the array list
+			
 			return item;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
@@ -46,13 +47,13 @@ public class ItemDAO {
 		}
 		return new ArrayList<>();
 	}
-
-	public Item readLatest() {
+@Override
+public Item read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
-			return modelitems(resultSet);
+			return modelItems(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -60,8 +61,8 @@ public class ItemDAO {
 		return null;
 	
 }
-	
-	public int deleteItem(long id) {
+	@Override 
+	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
 			statement.setLong(1, id);
@@ -73,17 +74,17 @@ public class ItemDAO {
 		return 0;
 		}
 
-
-	public Item updateitem(Item item) {
+@Override
+public Item update(Item item) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
-						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
+						.prepareStatement("UPDATE item SET cost = ?, name = ? WHERE id = ?");) {
 			System.out.println("item has been connected");
-			preStmt.setFloat(1, item.getId());
-			preStmt.setDouble(2, item.getCost());
-			preStmt.setString(3, item.getName());
+			preStmt.setDouble(1, item.getCost());
+			preStmt.setString(2, item.getName());
+			preStmt.setLong(3, item.getId());
 			preStmt.executeUpdate();
-			return read(Item.getId());
+			return read(item.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -91,18 +92,50 @@ public class ItemDAO {
 		return null;
 	
 		
-		PreparedStatement preStmt = conn.prepareStatement(query);
-		System.out.println("item has been connected");
+	
 		
-		preStmt.executeUpdate();
-		return readLatest();
-		
-	}catch(Exception e) {
-		e.printStackTrace();
-	}
-	return null;
+
 	
 	}
+
+
+@Override
+public Item create(Item item) {
+	try (Connection connection = DBUtils.getInstance().getConnection();
+			PreparedStatement Stmt = connection
+					.prepareStatement("INSERT INTO item(cost,name) VALUES (?, ?)");) {
+		Stmt.setDouble(1, item.getCost());
+		Stmt.setString(2, item.getName());
+		
+		Stmt.executeUpdate();
+		return read();
+	} catch (Exception e) {
+		LOGGER.debug(e);
+		LOGGER.error(e.getMessage());
+	}
+	return null;
+
+}
+
+
+public Item read() {
+	try (Connection connection = DBUtils.getInstance().getConnection();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+		resultSet.next();
+		return modelItems(resultSet);
+	} catch (Exception e) {
+		LOGGER.debug(e);
+		LOGGER.error(e.getMessage());
+	}
+	return null;
+
+}
+
+
+	
+
+
 
 
 }
