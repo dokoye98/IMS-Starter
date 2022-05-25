@@ -15,7 +15,7 @@ import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class ItemDAO {
+public class ItemDAO implements Dao<Item> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -46,8 +46,8 @@ public class ItemDAO {
 		}
 		return new ArrayList<>();
 	}
-
-	public Item readLatest() {
+@Override
+	public Item readLatestitem(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
@@ -83,7 +83,7 @@ public class ItemDAO {
 			preStmt.setDouble(2, item.getCost());
 			preStmt.setString(3, item.getName());
 			preStmt.executeUpdate();
-			return read(Item.getId());
+			return readLatestitem(item.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -91,17 +91,48 @@ public class ItemDAO {
 		return null;
 	
 		
-		PreparedStatement preStmt = conn.prepareStatement(query);
-		System.out.println("item has been connected");
-		
-		preStmt.executeUpdate();
-		return readLatest();
-		
-	}catch(Exception e) {
-		e.printStackTrace();
-	}
-	return null;
 	
+		
+
+	
+	}
+
+	
+
+	@Override
+	public Item read(Long id) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Item create(Item t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Item update(Item t) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int delete(long id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Item modelFromResultSet(ResultSet resultSet) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Customer modelCustomer(ResultSet resultSet) throws SQLException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 
