@@ -84,8 +84,7 @@ public class CustomerDAO implements Dao<Customer> {
 		return null;
 	}
 
-	@Override
-	public Customer read(Long id) {
+	public Customer readallCustomer(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE id = ?");) {
 			statement.setLong(1, id);
@@ -107,8 +106,7 @@ public class CustomerDAO implements Dao<Customer> {
 	 *                 update that customer in the database
 	 * @return
 	 */
-	@Override
-	public Customer update(Customer customer) {
+	public Customer updateCustomer(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {

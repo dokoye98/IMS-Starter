@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
 public class ItemDAOTest {
@@ -23,7 +24,7 @@ public class ItemDAOTest {
 
 	@Test
 	public void testCreate() {
-		final Customer created = new Customer(2L, "chris", "perrins","username","pass");
+		final Item created = new Item(2L, "chris");
 		assertEquals(created, idao.create(created));
 	}
 
@@ -31,7 +32,7 @@ public class ItemDAOTest {
 	public void testReadAll() {
 		List<Customer> expected = new ArrayList<>();
 		expected.add(new Item(1L, "jordan", "harrison","username","pass"));
-		assertEquals(expected, idao.readAll());
+		assertEquals(expected, ItemDAO.readallitem());
 	}
 
 	@Test

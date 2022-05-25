@@ -71,5 +71,38 @@ public class ItemDAO {
 			LOGGER.error(e.getMessage());
 		}
 		return 0;
+		}
+
+
+	public Item updateitem(Item item) {
+		try (Connection connection = DBUtils.getInstance().getConnection();
+				PreparedStatement preStmt = connection
+						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? WHERE id = ?");) {
+			System.out.println("item has been connected");
+			preStmt.setFloat(1, item.getId());
+			preStmt.setDouble(2, item.getCost());
+			preStmt.setString(3, item.getName());
+			preStmt.executeUpdate();
+			return read(Item.getId());
+		} catch (Exception e) {
+			LOGGER.debug(e);
+			LOGGER.error(e.getMessage());
+		}
+		return null;
+	
+		
+		PreparedStatement preStmt = conn.prepareStatement(query);
+		System.out.println("item has been connected");
+		
+		preStmt.executeUpdate();
+		return readLatest();
+		
+	}catch(Exception e) {
+		e.printStackTrace();
 	}
+	return null;
+	
+	}
+
+
 }
