@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import com.qa.ims.controller.ItemController;
 import com.qa.ims.controller.OrderController;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
@@ -19,7 +20,7 @@ import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 @RunWith(MockitoJUnitRunner.class)
-public class ItemController {
+public class ItemControllerTest {
 
 	@Mock
 	private Utils utils;
@@ -42,35 +43,35 @@ public class ItemController {
 		Mockito.when(dao.create(created)).thenReturn(created);
 
 		assertEquals(created, controller.create());
-		Mockito.verify(utils,Mockito.times(1)).getLong();
+		Mockito.verify(utils,Mockito.times(1)).getDouble();
 		Mockito.verify(utils, Mockito.times(1)).getString();
 		Mockito.verify(dao, Mockito.times(1)).create(created);
 	}
 
 	@Test
 	public void testReadAll() {
-		List<Order> order = new ArrayList<>();
-		order.add(new Order(12L));
+		List<Item> item = new ArrayList<>();
+		item.add(new Item(12.5, "percy"));
 
-		Mockito.when(dao.readAll()).thenReturn(order);
+		Mockito.when(dao.readAll()).thenReturn(item);
 
-		assertEquals(order, controller.readAll());
+		assertEquals(item, controller.readAll());
 
 		Mockito.verify(dao, Mockito.times(1)).readAll();
 	}
 
 	@Test
 	public void testUpdate() {
-		Order updated = new Order(12L);
+		Item updated = new Item(12.5, "percy");
 
-		Mockito.when(this.utils.getLong()).thenReturn(1L);
-		Mockito.when(this.utils.getString()).thenReturn(updated.getCustomer_ID()));
+		Mockito.when(this.utils.getLong()).thenReturn(12L);
+		Mockito.when(this.utils.getLong()).thenReturn(updated.getId());
 		Mockito.when(this.dao.update(updated)).thenReturn(updated);
 
 		assertEquals(updated, this.controller.update());
 
-		Mockito.verify(this.utils, Mockito.times(1)).getLong();
-		Mockito.verify(this.utils, Mockito.times(1)).getString();
+		Mockito.verify(this.utils, Mockito.times(2)).getLong();
+		Mockito.verify(this.utils, Mockito.times(0)).getString();
 		Mockito.verify(this.dao, Mockito.times(1)).update(updated);
 	}
 
