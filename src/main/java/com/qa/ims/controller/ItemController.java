@@ -38,9 +38,7 @@ public class ItemController implements CrudController<Item> {
 		return items;
 	}
 
-	/**
-	 * Creates a customer by taking in user input
-	 */
+	//create item controller
 	@Override
 	public Item create() {
 		LOGGER.info("Please enter your items price");
@@ -52,9 +50,7 @@ public class ItemController implements CrudController<Item> {
 		return items;
 	}
 
-	/**
-	 * Updates an existing customer by taking in user input
-	 */
+//update item controller
 	@Override
 	public Item update() {
 		LOGGER.info("Please enter the id of the item you would like to update");
@@ -68,11 +64,7 @@ public class ItemController implements CrudController<Item> {
 		return items;
 	}
 
-	/**
-	 * Deletes an existing customer by the id of the customer
-	 * 
-	 * @return
-	 */
+	//delete item controller
 	@Override
 	public int delete() {
 		LOGGER.info("Please enter the id of the customer you would like to delete");
