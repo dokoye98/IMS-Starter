@@ -22,7 +22,7 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	@Override
 	public Customer modelCustomer(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
-		String firstName = resultSet.getString("first_name");
+		String firstName = resultSet.getString("firstname");
 		String surname = resultSet.getString("surname");
 		String username = resultSet.getString("username");
 		String password = resultSet.getString("password");
@@ -73,7 +73,7 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	public Customer create(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement Stmt = connection
-						.prepareStatement("INSERT INTO customers(first_name, surname,username,password) VALUES (?, ?,?,?)");) {
+						.prepareStatement("INSERT INTO customers(firstname, surname,username,password) VALUES (?, ?,?,?)");) {
 			Stmt.setString(1, customer.getFirstName());
 			Stmt.setString(2, customer.getSurname());
 			Stmt.setString(3, customer.getUsername());
@@ -114,7 +114,7 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	public Customer update(Customer customer) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE customers SET first_name = ?, surname = ? , username =?, password =? WHERE id = ?");) {
+						.prepareStatement("UPDATE customers SET firstname = ?, surname = ? , username =?, password =? WHERE id = ?");) {
 			statement.setString(1, customer.getFirstName());
 			statement.setString(2, customer.getSurname());
 			statement.setString(3, customer.getUsername());

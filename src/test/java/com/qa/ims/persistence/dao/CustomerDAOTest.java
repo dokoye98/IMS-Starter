@@ -30,19 +30,19 @@ public class CustomerDAOTest {
 	@Test
 	public void testReadAll() {
 		List<Customer> expected = new ArrayList<>();
-		expected.add(new Customer(1L, "jordan", "harrison","username","pass"));
+		expected.add(new Customer(1L, "jordan", "harrison","username","password"));
 		assertEquals(expected, DAO.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals(new Customer(1L, "jordan", "harrison","username","pass"), DAO.read());
+		assertEquals(new Customer(1L, "jordan", "harrison","username","password"), DAO.read());
 	}
 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals(new Customer(ID, "jordan", "harrison","username","pass"), DAO.read(ID));
+		assertEquals(new Customer(ID, "jordan", "harrison","username","password"), DAO.read(ID));
 	}
 
 	@Test

@@ -17,7 +17,7 @@ import com.qa.ims.utils.DBUtils;
 
 public class ItemDAOTest {
 
-	private final ItemDAOTest DAO = new ItemDAOTest();
+	private final ItemDAOTest itemdao = new ItemDAOTest();
 
 	@Before
 	public void setup() {
@@ -28,7 +28,7 @@ public class ItemDAOTest {
 	@Test
 	public void testCreate() {
 		final Item created = new Item(2.43, "tee");
-		assertEquals(created, DAO.create(created));
+		assertEquals(created, itemdao.create(created));
 	}
 
 	@Test

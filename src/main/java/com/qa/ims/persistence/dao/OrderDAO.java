@@ -23,16 +23,15 @@ public class OrderDAO implements Dao<Order>,OrderInterface{
 
 	@Override
 	public Order modelOrder(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("id");
-		double cost = resultSet.getDouble("cost");
-		String name = resultSet.getString("name");
-		return new Order(id);
+		Long order_id = resultSet.getLong("order_id");
+		Long customer_id = resultSet.getLong("customer_id");
+		return new Order(order_id);
 	}
 	@Override
 	public List<Order> readAll(){
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
 			
 			
 			List<Order> item = new ArrayList<>();
@@ -48,10 +47,10 @@ public class OrderDAO implements Dao<Order>,OrderInterface{
 		return new ArrayList<>();
 	}
 @Override
-public Order read(Long id) {
+public Order read(Long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDERs BY order_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelOrder(resultSet);
 		} catch (Exception e) {
@@ -64,7 +63,7 @@ public Order read(Long id) {
 	@Override 
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders WHERE order_id = ?");) {
 			statement.setLong(1, id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
@@ -78,7 +77,7 @@ public Order read(Long id) {
 public Order update(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
-						.prepareStatement("UPDATE item SET customer_id = ? WHERE id = ?");) {
+						.prepareStatement("UPDATE orders SET customer_id = ? WHERE order_id = ?");) {
 			System.out.println("item has been connected");
 			preStmt.setLong(1, order.getCustomer_ID());
 			preStmt.executeUpdate();
@@ -111,7 +110,7 @@ public Order create(Order order) {
 public Order read() {
 	try (Connection connection = DBUtils.getInstance().getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY id DESC LIMIT 1");) {
 		resultSet.next();
 		return modelOrder(resultSet);
 	} catch (Exception e) {
