@@ -34,12 +34,12 @@ public class OrderDAO implements Dao<Order>,OrderInterface{
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
 			
 			
-			List<Order> item = new ArrayList<>();
+			List<Order> order = new ArrayList<>();
 			while (resultSet.next()) {
-				item.add(modelOrder(resultSet));
+				order.add(modelOrder(resultSet));
 			}
 			
-			return item;
+			return order;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -50,7 +50,7 @@ public class OrderDAO implements Dao<Order>,OrderInterface{
 public Order read(Long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDERs BY order_id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelOrder(resultSet);
 		} catch (Exception e) {
@@ -61,10 +61,10 @@ public Order read(Long order_id) {
 	
 }
 	@Override 
-	public int delete(long id) {
+	public int delete(long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders WHERE order_id = ?");) {
-			statement.setLong(1, id);
+			statement.setLong(1,order_id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -78,8 +78,8 @@ public Order update(Order order) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
 						.prepareStatement("UPDATE orders SET customer_id = ? WHERE order_id = ?");) {
-			System.out.println("item has been connected");
 			preStmt.setLong(1, order.getCustomer_ID());
+			preStmt.setLong(1, order.getOrder_ID());
 			preStmt.executeUpdate();
 			return read(order.getOrder_ID());
 		} catch (Exception e) {
