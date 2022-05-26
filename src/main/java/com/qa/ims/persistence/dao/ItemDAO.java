@@ -121,7 +121,7 @@ public Item create(Item item) {
 public Item read() {
 	try (Connection connection = DBUtils.getInstance().getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
 		resultSet.next();
 		return modelItems(resultSet);
 	} catch (Exception e) {
