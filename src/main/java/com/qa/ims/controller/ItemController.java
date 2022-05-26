@@ -56,20 +56,16 @@ public class ItemController implements CrudController<Item> {
 	 * Updates an existing customer by taking in user input
 	 */
 	@Override
-	public Customer update() {
-		LOGGER.info("Please enter the id of the customer you would like to update");
+	public Item update() {
+		LOGGER.info("Please enter the id of the item you would like to update");
 		Long id = utils.getLong();
-		LOGGER.info("Please enter a first name");
-		String firstName = utils.getString();
-		LOGGER.info("Please enter a surname");
-		String surname = utils.getString();
-		LOGGER.info("Please enter a  username");
-		String username = utils.getString();
-		LOGGER.info("Please enter a password");
-		String password = utils.getString();
-		Customer customer = customerDAO.update(new Customer(id, firstName, surname,username,password));
-		LOGGER.info("Customer Updated");
-		return customer;
+		LOGGER.info("Please enter the new price");
+		double cost = utils.getDouble();
+		LOGGER.info("Please enter the new name");
+		String name = utils.getString();
+		Item items = itemdao.update(new Item(id, cost,name ));
+		LOGGER.info("Item Updated");
+		return items;
 	}
 
 	/**
