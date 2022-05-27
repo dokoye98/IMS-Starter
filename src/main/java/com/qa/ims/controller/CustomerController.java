@@ -69,7 +69,7 @@ public class CustomerController implements CrudController<Customer> {
 		String surname = utils.getString();
 		LOGGER.info("Please enter a  username");
 		String username = utils.getString();
-		LOGGER.info("Please enter a surname");
+		LOGGER.info("Please enter a password");
 		String password = utils.getString();
 		Customer customer = customerDAO.update(new Customer(id, firstName, surname,username,password));
 		LOGGER.info("Customer Updated");
