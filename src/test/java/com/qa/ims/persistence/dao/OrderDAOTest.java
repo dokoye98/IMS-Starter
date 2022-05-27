@@ -24,7 +24,7 @@ public class OrderDAOTest {
 
 	@Test
 	public void testCreate() {
-		final Order created = new Order(1l);
+		final Order created = new Order(2L,1L);
 		assertEquals(created, odao.create(created));
 	}
 
@@ -32,24 +32,24 @@ public class OrderDAOTest {
 	@Test
 	public void testReadAll() {
 		List<Order> expected = new ArrayList<>();
-		expected.add(new Order(1l));
+		expected.add(new Order(1l,1L));
 		assertEquals(expected, odao.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals(new Order(1L), odao.read());
+		assertEquals(new Order(1L,1L), odao.read());
 	}
 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals(new Order(1l), odao.read(ID));
+		assertEquals(new Order(ID,1l), odao.read(ID));
 	}
 
 	@Test
 	public void testUpdate() {
-		final Order updated = new Order (1L);
+		final Order updated = new Order (1L,1l);
 		assertEquals(updated, odao.update(updated));
 
 	}

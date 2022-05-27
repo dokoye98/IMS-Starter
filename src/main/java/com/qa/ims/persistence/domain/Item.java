@@ -37,6 +37,13 @@ public class Item {
 
 
 	@Override
+	public String toString() {
+		return "Item [id=" + id + ", cost=" + cost + ", name=" + name + "]";
+	}
+
+
+
+	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;

@@ -25,7 +25,7 @@ public class OrderDAO implements Dao<Order>,OrderInterface{
 	public Order modelOrder(ResultSet resultSet) throws SQLException {
 		Long order_id = resultSet.getLong("order_id");
 		Long customer_id = resultSet.getLong("customer_id");
-		return new Order(order_id);
+		return new Order(order_id,customer_id);
 	}
 	@Override
 	public List<Order> readAll(){
@@ -79,7 +79,7 @@ public Order update(Order order) {
 				PreparedStatement preStmt = connection
 						.prepareStatement("UPDATE orders SET customer_id = ? WHERE order_id = ?");) {
 			preStmt.setLong(1, order.getCustomer_ID());
-			preStmt.setLong(1, order.getOrder_ID());
+			preStmt.setLong(2, order.getOrder_ID());
 			preStmt.executeUpdate();
 			return read(order.getOrder_ID());
 		} catch (Exception e) {
@@ -110,7 +110,7 @@ public Order create(Order order) {
 public Order read() {
 	try (Connection connection = DBUtils.getInstance().getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY id DESC LIMIT 1");) {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY order_id DESC LIMIT 1");) {
 		resultSet.next();
 		return modelOrder(resultSet);
 	} catch (Exception e) {
