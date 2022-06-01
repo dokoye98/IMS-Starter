@@ -3,8 +3,8 @@ package com.qa.ims;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.controller.CustomerController;
-import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.controller.ClientController;
+import com.qa.ims.persistence.dao.ClientDAO;
 
 public class Runner {
 

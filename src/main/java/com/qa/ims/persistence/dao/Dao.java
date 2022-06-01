@@ -4,7 +4,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Client;
 import com.qa.ims.persistence.domain.Item;
 
 public interface Dao<T> {

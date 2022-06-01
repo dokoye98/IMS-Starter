@@ -11,36 +11,36 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Client;
-import com.qa.ims.persistence.domain.Item;
+import com.qa.ims.persistence.domain.Order;
+import com.qa.ims.persistence.domain.Product;
 import com.qa.ims.utils.DBUtils;
 
-public class ItemDAO implements Dao<Item>,ItemsInterface {
-
+public class ProductDAO implements Dao<Product>, ProductInterface {
+	
+	
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	
-	//model
+
 	@Override
-	public Item modelItems(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("id");
+	public Product modelProduct(ResultSet resultSet) throws SQLException {
+		Long product_id = resultSet.getLong("product_id");
 		double cost = resultSet.getDouble("cost");
-		String name = resultSet.getString("name");
-		return new Item(id,cost,name);
+		String addOns = resultSet.getString("addOns");
+		return new Product(product_id,cost,addOns);
 	}
 	@Override
-	public List<Item> readAll(){
+	public List<Product> readAll(){
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM Product");) {
 			
-			//items data type into array list
-			List<Item> item = new ArrayList<>();
+			
+			List<Product> product = new ArrayList<>();
 			while (resultSet.next()) {
-				item.add(modelItems(resultSet));
+				product.add(modelProduct(resultSet));
 			}
 			
-			return item;
+			return product;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -48,12 +48,12 @@ public class ItemDAO implements Dao<Item>,ItemsInterface {
 		return new ArrayList<>();
 	}
 @Override
-public Item read(Long id) {
+public Product read(Long product_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("SELECT * FROM product ORDER BY product_id DESC LIMIT 1");) {
 			resultSet.next();
-			return modelItems(resultSet);
+			return modelProduct(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -62,10 +62,10 @@ public Item read(Long id) {
 	
 }
 	@Override 
-	public int delete(long id) {
+	public int delete(long order_id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM item WHERE id = ?");) {
-			statement.setLong(1, id);
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM product WHERE product_id = ?");) {
+			statement.setLong(1,order_id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -75,38 +75,30 @@ public Item read(Long id) {
 		}
 
 @Override
-public Item update(Item item) {
+public Product update(Product product) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement preStmt = connection
-						.prepareStatement("UPDATE item SET cost = ?, name = ? WHERE id = ?");) {
-			System.out.println("item has been connected");
-			preStmt.setDouble(1, item.getCost());
-			preStmt.setString(2, item.getName());
-			preStmt.setLong(3, item.getId());
+						.prepareStatement("UPDATE product SET cost = ?,addons = ? WHERE product_id = ?");) {
+		preStmt.setDouble(1, product.getCost());
+			preStmt.setString(2, product.getAddOns());
+			preStmt.setLong(3, product.getProductId());
 			preStmt.executeUpdate();
-			return read(item.getId());
+			return read(product.getProductId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return null;
-	
-		
-	
-		
-
-	
-	}
+}
 
 
 @Override
-public Item create(Item item) {
+public Product create(Product product) {
 	try (Connection connection = DBUtils.getInstance().getConnection();
 			PreparedStatement Stmt = connection
-					.prepareStatement("INSERT INTO item(cost,name) VALUES (?, ?)");) {
-		Stmt.setDouble(1, item.getCost());
-		Stmt.setString(2, item.getName());
-		
+					.prepareStatement("Insert into Product(cost,addons) VALUES (?,?);");) {
+		Stmt.setDouble(1, product.getCost());
+		Stmt.setString(2, product.getAddOns());
 		Stmt.executeUpdate();
 		return read();
 	} catch (Exception e) {
@@ -118,24 +110,18 @@ public Item create(Item item) {
 }
 
 
-public Item read() {
+public Product read() {
 	try (Connection connection = DBUtils.getInstance().getConnection();
 			Statement statement = connection.createStatement();
-			ResultSet resultSet = statement.executeQuery("SELECT * FROM item ORDER BY id DESC LIMIT 1");) {
+			ResultSet resultSet = statement.executeQuery("SELECT * FROM product ORDER BY product_id DESC LIMIT 1");) {
 		resultSet.next();
-		return modelItems(resultSet);
+		return modelProduct(resultSet);
 	} catch (Exception e) {
 		LOGGER.debug(e);
 		LOGGER.error(e.getMessage());
 	}
 	return null;
 
-}
-
-
 	
-
-
-
-
+}
 }

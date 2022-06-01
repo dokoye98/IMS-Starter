@@ -11,22 +11,23 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Client;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDAO implements Dao<Customer>,Customerinter {
+public class ClientDAO implements Dao<Client>,ClientInterface {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	@Override
-	public Customer modelCustomer(ResultSet resultSet) throws SQLException {
+	public Client modelClient(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
 		String firstName = resultSet.getString("firstname");
 		String surname = resultSet.getString("surname");
 		String username = resultSet.getString("username");
 		String password = resultSet.getString("password");
-		return new Customer(id, firstName, surname,username,password);
+		boolean deluxeMember = resultSet.getBoolean("membership");
+		return new Client(id, firstName, surname,username,password,deluxeMember);
 	}
 
 	/**
@@ -35,15 +36,15 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	 * @return A list of customers
 	 */
 	@Override
-	public List<Customer> readAll() {
+	public List<Client> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers");) {
-			List<Customer> customers = new ArrayList<>();
+			List<Client> clients = new ArrayList<>();
 			while (resultSet.next()) {
-				customers.add(modelCustomer(resultSet));
+				clients.add(modelClient(resultSet));
 			}
-			return customers;
+			return clients;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -51,12 +52,12 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 		return new ArrayList<>();
 	}
 @Override
-	public Customer read() {
+	public Client read() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM customers ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
-			return modelCustomer(resultSet);
+			return modelClient(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -65,19 +66,20 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	}
 
 	/**
-	 * Creates a customer in the database
+	 * Creates a client in the database
 	 * 
-	 * @param customer - takes in a customer object. id will be ignored
+	 * @param client - takes in a customer object. id will be ignored
 	 */
 	@Override
-	public Customer create(Customer customer) {
+	public Client create(Client client) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement Stmt = connection
-						.prepareStatement("INSERT INTO customers(firstname, surname,username,password) VALUES (?, ?,?,?)");) {
-			Stmt.setString(1, customer.getFirstName());
-			Stmt.setString(2, customer.getSurname());
-			Stmt.setString(3, customer.getUsername());
-			Stmt.setString(4, customer.getPassword());
+						.prepareStatement("INSERT INTO customers(firstname, surname,username,password,membership) VALUES (?, ?,?,?,?)");) {
+			Stmt.setString(1, client.getFirstName());
+			Stmt.setString(2, client.getSurname());
+			Stmt.setString(3, client.getUsername());
+			Stmt.setString(4, client.getPassword());
+			Stmt.setBoolean(5, client.isDeluxeMember());
 			Stmt.executeUpdate();
 			return read();
 		} catch (Exception e) {
@@ -87,13 +89,13 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 		return null;
 	}
 @Override
-	public Customer read(Long id) {
+	public Client read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("SELECT * FROM customers WHERE id = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
-				return modelCustomer(resultSet);
+				return modelClient(resultSet);
 			}
 		} catch (Exception e) {
 			LOGGER.debug(e);
@@ -105,23 +107,24 @@ public class CustomerDAO implements Dao<Customer>,Customerinter {
 	/**
 	 * Updates a customer in the database
 	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
+	 * @param client - takes in a customer object, the id field will be used to
 	 *                 update that customer in the database
 	 * @return
 	 */
 //edited query 
 @Override
-	public Customer update(Customer customer) {
+	public Client update(Client client) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
-						.prepareStatement("UPDATE customers SET firstname = ?, surname = ? , username =?, password =? WHERE id = ?");) {
-			statement.setString(1, customer.getFirstName());
-			statement.setString(2, customer.getSurname());
-			statement.setString(3, customer.getUsername());
-			statement.setString(4, customer.getPassword());
-			statement.setLong(5, customer.getId());
+						.prepareStatement("UPDATE customers SET firstname = ?, surname = ? , username =?, password =?, membership = ? WHERE id = ?");) {
+			statement.setString(1, client.getFirstName());
+			statement.setString(2, client.getSurname());
+			statement.setString(3, client.getUsername());
+			statement.setString(4, client.getPassword());
+			statement.setBoolean(5, client.isDeluxeMember());
+			statement.setLong(6, client.getId());
 			statement.executeUpdate();
-			return read(customer.getId());
+			return read(client.getId());
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());

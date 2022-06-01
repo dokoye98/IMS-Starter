@@ -52,4 +52,9 @@ public class Utils {
 		return doubleInput;
 	}
 
+	public boolean getboolean() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
 }
