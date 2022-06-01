@@ -5,12 +5,14 @@ import org.apache.logging.log4j.Logger;
 
 import com.qa.ims.controller.Action;
 import com.qa.ims.controller.CrudController;
-import com.qa.ims.controller.CustomerController;
+import com.qa.ims.controller.ClientController;
 import com.qa.ims.controller.ItemController;
 import com.qa.ims.controller.OrderController;
-import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.controller.ProductController;
+import com.qa.ims.persistence.dao.ClientDAO;
 import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.dao.ProductDAO;
 import com.qa.ims.persistence.domain.Domain;
 import com.qa.ims.utils.DBUtils;
 import com.qa.ims.utils.Utils;
@@ -19,19 +21,22 @@ public class IMS {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private final CustomerController customers;
+	private final ClientController client;
 	private final ItemController items;
 	private final OrderController order;
+	private final ProductController product;
 	private final Utils utils;
 
 	public IMS() {
 		this.utils = new Utils();
-		final CustomerDAO custDAO = new CustomerDAO();
-		this.customers = new CustomerController(custDAO, utils);
+		final ClientDAO custDAO = new ClientDAO();
+		this.client = new ClientController(custDAO, utils);
 		final OrderDAO orDAO = new OrderDAO();
 		this.order = new OrderController(orDAO, utils);
 		final ItemDAO itDAO = new ItemDAO();
 		this.items = new ItemController(itDAO, utils);
+		final ProductDAO proDAO = new ProductDAO();
+		this.product = new ProductController(proDAO,utils);
 	}
 
 	public void imsSystem() {
@@ -56,14 +61,17 @@ public class IMS {
 
 			CrudController<?> active = null;
 			switch (domain) {
-			case CUSTOMER:
-				active = this.customers;
+			case CLIENT:
+				active = this.client;
 				break;
 			case ITEM:
 				active = this.items;
 				break;
 			case ORDER:
 				active = this.order;
+				break;
+			case PRODUCT:
+				active = this.product;
 				break;
 			case STOP:
 				return;

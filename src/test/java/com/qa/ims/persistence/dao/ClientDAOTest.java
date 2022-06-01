@@ -8,12 +8,12 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.domain.Client;
 import com.qa.ims.utils.DBUtils;
 
-public class CustomerDAOTest {
+public class ClientDAOTest {
 
-	private final CustomerDAO DAO = new CustomerDAO();
+	private final ClientDAO DAO = new ClientDAO();
 
 	@Before
 	public void setup() {
@@ -23,31 +23,31 @@ public class CustomerDAOTest {
 
 	@Test
 	public void testCreate() {
-		final Customer created = new Customer(2L, "chris", "perrins","username","pass");
+		final Client created = new Client(2L, "chris", "perrins","username","pass", false);
 		assertEquals(created, DAO.create(created));
 	}
 
 	@Test
 	public void testReadAll() {
-		List<Customer> expected = new ArrayList<>();
-		expected.add(new Customer(1L, "jordan", "harrison","username","password"));
+		List<Client> expected = new ArrayList<>();
+		expected.add(new Client(1L, "jordan", "harrison","username","password", false));
 		assertEquals(expected, DAO.readAll());
 	}
 
 	@Test
 	public void testReadLatest() {
-		assertEquals(new Customer(1L, "jordan", "harrison","username","password"), DAO.read());
+		assertEquals(new Client(1L, "jordan", "harrison","username","password", false), DAO.read());
 	}
 
 	@Test
 	public void testRead() {
 		final long ID = 1L;
-		assertEquals(new Customer(ID, "jordan", "harrison","username","password"), DAO.read(ID));
+		assertEquals(new Client(ID, "jordan", "harrison","username","password", false), DAO.read(ID));
 	}
 
 	@Test
 	public void testUpdate() {
-		final Customer updated = new Customer(1L, "chris", "perrins","username","pass");
+		final Client updated = new Client(1L, "chris", "perrins","username","pass", false);
 		assertEquals(updated, DAO.update(updated));
 
 	}

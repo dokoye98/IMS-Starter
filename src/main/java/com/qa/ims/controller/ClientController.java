@@ -5,24 +5,24 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.qa.ims.persistence.dao.CustomerDAO;
-import com.qa.ims.persistence.domain.Customer;
+import com.qa.ims.persistence.dao.ClientDAO;
+import com.qa.ims.persistence.domain.Client;
 import com.qa.ims.utils.Utils;
 
 /**
  * Takes in customer details for CRUD functionality
  *
  */
-public class CustomerController implements CrudController<Customer> {
+public class ClientController implements CrudController<Client> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
-	private CustomerDAO customerDAO;
+	private ClientDAO clientDAO;
 	private Utils utils;
 
-	public CustomerController(CustomerDAO customerDAO, Utils utils) {
+	public ClientController(ClientDAO clientDAO, Utils utils) {
 		super();
-		this.customerDAO = customerDAO;
+		this.clientDAO = clientDAO;
 		this.utils = utils;
 	}
 
@@ -30,19 +30,19 @@ public class CustomerController implements CrudController<Customer> {
 	 * Reads all customers to the logger
 	 */
 	@Override
-	public List<Customer> readAll() {
-		List<Customer> customers = customerDAO.readAll();
-		for (Customer customer : customers) {
-			LOGGER.info(customer);
+	public List<Client> readAll() {
+		List<Client> clients = clientDAO.readAll();
+		for (Client client : clients) {
+			LOGGER.info(client);
 		}
-		return customers;
+		return clients;
 	}
 
 	/**
 	 * Creates a customer by taking in user input
 	 */
 	@Override
-	public Customer create() {
+	public Client create() {
 		LOGGER.info("Please enter a first name");
 		String firstName = utils.getString();
 		LOGGER.info("Please enter a surname");
@@ -51,16 +51,18 @@ public class CustomerController implements CrudController<Customer> {
 		String username = utils.getString();
 		LOGGER.info("Please enter a password");
 		String password = utils.getString();
-		Customer customer = customerDAO.create(new Customer(firstName, surname,username,password));
+		LOGGER.info("are you a member");
+		boolean membership = utils.getboolean();
+		Client client = clientDAO.create(new Client(firstName, surname,username,password,membership));
 		LOGGER.info("Customer created");
-		return customer;
+		return client;
 	}
 
 	/**
 	 * Updates an existing customer by taking in user input
 	 */
 	@Override
-	public Customer update() {
+	public Client update() {
 		LOGGER.info("Please enter the id of the customer you would like to update");
 		Long id = utils.getLong();
 		LOGGER.info("Please enter a first name");
@@ -71,9 +73,11 @@ public class CustomerController implements CrudController<Customer> {
 		String username = utils.getString();
 		LOGGER.info("Please enter a password");
 		String password = utils.getString();
-		Customer customer = customerDAO.update(new Customer(id, firstName, surname,username,password));
+		LOGGER.info("are you a member");
+		boolean membership = utils.getboolean();
+		Client client = clientDAO.create(new Client(firstName, surname,username,password,membership));
 		LOGGER.info("Customer Updated");
-		return customer;
+		return client;
 	}
 
 	/**
@@ -85,7 +89,7 @@ public class CustomerController implements CrudController<Customer> {
 	public int delete() {
 		LOGGER.info("Please enter the id of the customer you would like to delete");
 		Long id = utils.getLong();
-		return customerDAO.delete(id);
+		return clientDAO.delete(id);
 	}
 
 }
